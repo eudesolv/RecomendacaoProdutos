@@ -5,7 +5,6 @@ class Produto:
         self.__preco = preco
         self.__estoque = estoque
 
-   
     def get_id(self):
         return self.__id
 
@@ -28,6 +27,5 @@ class Produto:
     def set_estoque(self, estoque):
         self.__estoque = estoque
 
-    
     def __str__(self):
         return f"{self.__id} - {self.__nome} | R$ {self.__preco} | Estoque: {self.__estoque}"
