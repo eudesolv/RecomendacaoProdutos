@@ -109,7 +109,7 @@ class Application():
         self.filtrar_combo.set("Todos")
         self.filtrar_combo.place(relx=0.49, rely=0.20, relwidth=0.15, relheight=0.55)
 
-        self.bt_buscar = Button(self.frame_busca, text= "🔍", command= self.buscar_livro, bg= "#2196F3", font= 12, cursor= "hand2")
+        self.bt_buscar = Button(self.frame_busca, text= "🔍", command= self.buscar_livro, bg= "#2196F3", font= ("Arial", 12), cursor= "hand2")
         self.bt_buscar.place(relx=0.66, rely=0.15, relwidth=0.06, relheight=0.65)
 
         self.bt_limpar_busca= Button(self.frame_busca, text= "LIMPAR BUSCA", command= self.limpar_busca, bg= "#9E9E9E", font = ("Dosi", 10, "bold"), cursor= "hand2")
