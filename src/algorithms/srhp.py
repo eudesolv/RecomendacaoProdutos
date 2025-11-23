@@ -1,8 +1,10 @@
-class Arvore_SRPH:
+class ArvoreAVL:
     def __init__(self):
         self.raiz = None
+        self.produtos_por_categoria = {}
 
-    class No_SRPH:
+    class NoAVL:
+    # Cada nó vai ser uma categoria no app
         def __init__(self, dado):
             self.dado = dado
             self.altura = 1
@@ -40,12 +42,13 @@ class Arvore_SRPH:
         return y
 
     def inserir_categoria(self, dado):
+        if dado not in self.produtos_por_categoria:
+            self.produtos_por_categoria[dado] = []
         self.raiz = self._inserir_recursivo(self.raiz, dado)
-        print(f"'{dado}' inserido.")
 
     def _inserir_recursivo(self, raiz_atual, dado):
         if not raiz_atual:
-            return self.No_SRPH(dado)
+            return self.NoAVL(dado)
 
         if dado < raiz_atual.dado:
             raiz_atual.esquerda = self._inserir_recursivo(raiz_atual.esquerda, dado)
@@ -86,6 +89,56 @@ class Arvore_SRPH:
             return self._buscar_recursivo(no_atual.esquerda, dado)
         else:
             return self._buscar_recursivo(no_atual.direita, dado)
+        
+    def _get_sucessor(self, no):
+        no_atual = no.direita
+        while no_atual.esquerda is not None:
+            no_atual = no_atual.esquerda
+        return no_atual
+    
+    def remover_categoria(self, dado):
+        self.raiz = self._remover_recursivo(self.raiz, dado)
+        if dado in self.produtos_por_categoria:
+            del self.produtos_por_categoria[dado]
+            
+    def _remover_recursivo(self, raiz_atual, dado):
+        if raiz_atual is None:
+            return raiz_atual
+
+        if dado < raiz_atual.dado:
+            raiz_atual.esquerda = self._remover_recursivo(raiz_atual.esquerda, dado)
+        elif dado > raiz_atual.dado:
+            raiz_atual.direita = self._remover_recursivo(raiz_atual.direita, dado)
+        else:
+            if raiz_atual.esquerda is None or raiz_atual.direita is None:
+                temp = raiz_atual.esquerda if raiz_atual.esquerda is not None else raiz_atual.direita
+                raiz_atual = temp
+            else:
+                temp = self._get_sucessor(raiz_atual)
+                raiz_atual.dado = temp.dado
+                raiz_atual.direita = self._remover_recursivo(raiz_atual.direita, temp.dado)
+
+        if raiz_atual is None:
+            return raiz_atual
+
+        self._atualizar_altura(raiz_atual)
+        fb = self._get_fb(raiz_atual)
+
+        if fb > 1 and self._get_fb(raiz_atual.esquerda) >= 0:
+            return self._rotacao_direita(raiz_atual)
+
+        if fb > 1 and self._get_fb(raiz_atual.esquerda) < 0:
+            raiz_atual.esquerda = self._rotacao_esquerda(raiz_atual.esquerda)
+            return self._rotacao_direita(raiz_atual)
+
+        if fb < -1 and self._get_fb(raiz_atual.direita) <= 0:
+            return self._rotacao_esquerda(raiz_atual)
+
+        if fb < -1 and self._get_fb(raiz_atual.direita) > 0:
+            raiz_atual.direita = self._rotacao_direita(raiz_atual.direita)
+            return self._rotacao_esquerda(raiz_atual)
+
+        return raiz_atual
 
     def cadastrar_produto_em_categoria(self, nome_categoria, nome_produto):
         no_categoria = self.buscar_categoria(nome_categoria)
@@ -112,13 +165,20 @@ class Arvore_SRPH:
             return "Nenhum produto encontrado nesta hierarquia (simulada)."
 
     def _get_produtos_recursivo(self, no_atual):
-        produtos = []
+        categorias = []
         if no_atual:
-            produtos.append(no_atual.dado)
-            produtos.extend(self._get_produtos_recursivo(no_atual.esquerda))
-            produtos.extend(self._get_produtos_recursivo(no_atual.direita))
-
-        return produtos
+            categorias.append(no_atual.dado)
+            categorias.extend(self._get_produtos_recursivo(no_atual.esquerda))
+            categorias.extend(self._get_produtos_recursivo(no_atual.direita))
+        return categorias
+    
+    def listar_categorias_hierarquicas(self, categoria_raiz=None):
+        if categoria_raiz:
+            no_raiz = self.buscar_categoria(categoria_raiz)
+        else:
+            no_raiz = self.raiz
+            
+        return self._get_produtos_recursivo(no_raiz)
 
     def travessia_em_ordem(self, no_atual):
         resultado = []
