@@ -2,7 +2,7 @@ import time
 from productController import ProductController
 
 def medir_performance_avl(controller, num_itens=5000):
-    print(f"\n--- 📈 Executando Teste de Performance da Inserção AVL ({num_itens} Categorias) ---")
+    print(f"\n---Executando Teste de Performance da Inserção AVL ({num_itens} Categorias)---")
     
     arvore_teste = controller.arvore_categorias
     dados = [f"Categoria_{i:05d}" for i in range(num_itens)]
