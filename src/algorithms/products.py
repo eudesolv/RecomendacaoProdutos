@@ -44,7 +44,7 @@ class Produto:
     def set_idioma(self, idioma):
         self.__idioma = idioma
     
-    # para usar no view
+    # para uso no view
     def to_dict(self):
         return {
             'id': self.__id,

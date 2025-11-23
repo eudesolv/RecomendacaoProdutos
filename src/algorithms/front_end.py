@@ -61,8 +61,8 @@ class Application:
         self.autor_entry = Entry(self.frame_1, font= ("Arial", 10))
         self.autor_entry.place(relx=0.60, rely=0.20, relwidth=0.18, relheight=0.15)
 
-        self.label_valor = Label(self.frame_1, bg = "#D3D3D3", text= "Valor (R$)", font= ("Dosi", 10, "bold"))
-        self.label_valor.place(relx=0.02, rely=0.45, relwidth=0.12)
+        self.label_preco = Label(self.frame_1, bg = "#D3D3D3", text= "Valor (R$)", font= ("Dosi", 10, "bold"))
+        self.label_preco.place(relx=0.02, rely=0.45, relwidth=0.12)
         self.preco_entry = Entry(self.frame_1, font = ("Arial", 10))
         self.preco_entry.place(relx=0.02, rely=0.60, relwidth=0.12, relheight=0.15)
 
@@ -102,6 +102,9 @@ class Application:
 
         self.bt_limpar = Button(self.frame_2, text= "LIMPAR CAMPOS", command= self.limpar_campos, bg= "#9E9E9E", fg= "white", font= ("Dosi", 10, "bold"), cursor= "hand2")
         self.bt_limpar.place(relx=0.28, rely=0.87, relwidth=0.13, relheight=0.1)
+        
+        self.bt_recomendar = Button(self.frame_2, text= "⭐ RECOMENDAR", command= self.recomendar_livros, bg= "#E91E63", fg= "white", font= ("Dosi", 10, "bold"), cursor= "hand2")
+        self.bt_recomendar.place(relx=0.42, rely=0.87, relwidth=0.15, relheight=0.1)
 
     def busca(self):
         self.label_buscar = Label(self.frame_busca, bg = "#D3D3D3", text= "Pesquisar 🔍", font= ("Dosi", 11, "bold"))
@@ -265,7 +268,7 @@ class Application:
                 livro = produto.to_dict()
                 
                 self.id_entry.delete(0, tk.END)
-                self.id_entry.insert(0, livro['codigo'])
+                self.id_entry.insert(0, livro['id'])
                 
                 self.nome_entry.delete(0, tk.END)
                 self.nome_entry.insert(0, livro['nome'])
@@ -310,17 +313,17 @@ class Application:
         nome = self.nome_entry.get().strip()
         autor = self.autor_entry.get().strip()
         ano = self.ano_entry.get().strip()
-        valor = self.preco_entry.get().strip()
+        preco = self.preco_entry.get().strip()
         estoque = self.estoque_entry.get().strip()
         categoria = self.categoria_combo.get().strip()
         idioma = self.idioma_combo.get().strip()
         
-        if not all([codigo, nome, valor, estoque]):
+        if not all([codigo, nome, preco, estoque]):
             messagebox.showwarning("Atenção", "Preencha pelo menos: Código, Nome, Valor e Estoque!")
             return None
         
         try:
-            valor_float = float(valor)
+            preco_float = float(preco)
             estoque_int = int(estoque)
             ano_int = int(ano) if ano else 0
         except ValueError:
@@ -332,7 +335,7 @@ class Application:
             'nome': nome,
             'autor': autor if autor else "-",
             'ano': ano_int,
-            'valor': valor_float,
+            'preco': preco_float,
             'estoque': estoque_int,
             'categoria': categoria if categoria else "-",
             'idioma': idioma if idioma else "-"

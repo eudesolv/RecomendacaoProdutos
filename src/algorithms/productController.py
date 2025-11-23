@@ -56,3 +56,40 @@ class ProductController:
              self.arvore_categorias.remover_categoria(categoria)
 
         return True, "Livro removido"
+    
+    def buscar_por_termo(self, termo, filtro):
+        termo = termo.lower()
+        resultados = []
+        
+        for produto in self.produtos:
+            dados = produto.to_dict()
+            encontrado = False
+            
+            if filtro == "Todos":
+                if any(termo in str(v).lower() for v in dados.values()):
+                    encontrado = True
+            elif filtro == "Código" and termo == str(dados['codigo']).lower():
+                encontrado = True
+            elif filtro == "Nome" and termo in dados['nome'].lower():
+                encontrado = True
+            elif filtro == "Autor" and termo in dados['autor'].lower():
+                encontrado = True
+            elif filtro == "Gênero" and termo in dados['categoria'].lower():
+                encontrado = True
+            elif filtro == "Ano" and termo in str(dados['ano']):
+                encontrado = True
+                
+            if encontrado:
+                resultados.append(dados)
+                
+        return resultados
+
+    def recomendar_produtos_por_categoria(self, categoria_raiz):
+        categorias_alvo = self.arvore_categorias.listar_categorias_hierarquicas(categoria_raiz)
+        
+        produtos_recomendados = []
+        for produto in self.produtos:
+            if produto.get_categoria() in categorias_alvo:
+                produtos_recomendados.append(produto.to_dict())
+                
+        return produtos_recomendados, categorias_alvo
