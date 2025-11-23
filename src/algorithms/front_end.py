@@ -42,8 +42,8 @@ class Application:
     def widgets(self):
         self.label_codigo = Label(self.frame_1, text = "Código do Livro", bg ="#D3D3D3", font = ("Dosis", 10, "bold"))
         self.label_codigo.place(relx=0.02, rely=0.05, relwidth=0.12)
-        self.codigo_entry = Entry(self.frame_1, font = ("Arial", 10))
-        self.codigo_entry.place(relx=0.02, rely=0.20, relwidth=0.12, relheight=0.15)
+        self.id_entry = Entry(self.frame_1, font = ("Arial", 10))
+        self.id_entry.place(relx=0.02, rely=0.20, relwidth=0.12, relheight=0.15)
 
         self.label_nome = Label(self.frame_1, text = "Nome do Livro", bg = "#D3D3D3", font = ("Dosis", 10, "bold"))
         self.label_nome.place(relx=0.15, rely=0.05, relwidth=0.25)
@@ -63,8 +63,8 @@ class Application:
 
         self.label_valor = Label(self.frame_1, bg = "#D3D3D3", text= "Valor (R$)", font= ("Dosi", 10, "bold"))
         self.label_valor.place(relx=0.02, rely=0.45, relwidth=0.12)
-        self.valor_entry = Entry(self.frame_1, font = ("Arial", 10))
-        self.valor_entry.place(relx=0.02, rely=0.60, relwidth=0.12, relheight=0.15)
+        self.preco_entry = Entry(self.frame_1, font = ("Arial", 10))
+        self.preco_entry.place(relx=0.02, rely=0.60, relwidth=0.12, relheight=0.15)
 
         self.label_estoque = Label (self.frame_1, text= "Estoque", bg="#D3D3D3", font= ("Dosi", 10, "bold"))
         self.label_estoque.place(relx=0.15, rely=0.45, relwidth=0.10)
@@ -221,11 +221,11 @@ class Application:
         for idx, livro in enumerate(produtos):
             tag = "evenrow" if idx % 2 == 0 else "oddrow"
             self.tree.insert("", "end", values=(
-                livro['codigo'], 
+                livro['id'], 
                 livro['nome'], 
                 livro['categoria'], 
                 livro['autor'],
-                f"R$ {livro['valor']:.2f}", 
+                f"R$ {livro['preco']:.2f}", 
                 livro['estoque'], 
                 livro['idioma'], 
                 livro['ano']
@@ -264,8 +264,8 @@ class Application:
             if produto:
                 livro = produto.to_dict()
                 
-                self.codigo_entry.delete(0, tk.END)
-                self.codigo_entry.insert(0, livro['codigo'])
+                self.id_entry.delete(0, tk.END)
+                self.id_entry.insert(0, livro['codigo'])
                 
                 self.nome_entry.delete(0, tk.END)
                 self.nome_entry.insert(0, livro['nome'])
@@ -275,8 +275,8 @@ class Application:
                 self.autor_entry.delete(0, tk.END)
                 self.autor_entry.insert(0, livro['autor'])
                 
-                self.valor_entry.delete(0, tk.END)
-                self.valor_entry.insert(0, str(livro['valor']))
+                self.preco_entry.delete(0, tk.END)
+                self.preco_entry.insert(0, str(livro['preco']))
                 
                 self.estoque_entry.delete(0, tk.END)
                 self.estoque_entry.insert(0, str(livro['estoque']))
@@ -286,31 +286,31 @@ class Application:
                 self.ano_entry.delete(0, tk.END)
                 self.ano_entry.insert(0, str(livro['ano']))
                 
-                self.livro_selecionado = livro['codigo']
+                self.livro_selecionado = livro['id']
                 
-                self.codigo_entry.config(state='disabled')
+                self.id_entry.config(state='disabled')
         else:
             self.limpar_campos()
 
     def limpar_campos(self):
-        self.codigo_entry.delete(0, tk.END)
+        self.id_entry.delete(0, tk.END)
         self.nome_entry.delete(0, tk.END)
         self.autor_entry.delete(0, tk.END)
         self.ano_entry.delete(0, tk.END)
-        self.valor_entry.delete(0, tk.END)
+        self.preco_entry.delete(0, tk.END)
         self.estoque_entry.delete(0, tk.END)
         self.categoria_combo.set("")
         self.idioma_combo.set("")
         self.rec_combo.set("") 
         self.livro_selecionado = None
-        self.codigo_entry.config(state='normal')
+        self.id_entry.config(state='normal')
 
     def obter_dados_formulario(self):
-        codigo = self.codigo_entry.get().strip()
+        codigo = self.id_entry.get().strip()
         nome = self.nome_entry.get().strip()
         autor = self.autor_entry.get().strip()
         ano = self.ano_entry.get().strip()
-        valor = self.valor_entry.get().strip()
+        valor = self.preco_entry.get().strip()
         estoque = self.estoque_entry.get().strip()
         categoria = self.categoria_combo.get().strip()
         idioma = self.idioma_combo.get().strip()

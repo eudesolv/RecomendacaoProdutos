@@ -11,7 +11,7 @@ class ProductController:
         self.arvore_categorias = ArvoreAVL()
 
     def adicionar(self, dados):
-        id = dados["codigo"]
+        id = dados["id"]
         produto = Produto(id, dados['nome'], dados['autor'], dados['ano'], dados['preco'], dados['estoque'], dados['categoria'], dados['idioma'])
         self.produtos.append(produto)
         self.produtos_map[id] = produto
