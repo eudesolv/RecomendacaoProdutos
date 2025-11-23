@@ -186,3 +186,17 @@ class ArvoreAVL:
             resultado.append(no_atual.dado)
             resultado.extend(self.travessia_em_ordem(no_atual.direita))
         return resultado
+    
+    def imprimir_hierarquia(self, no_atual, nivel=0):
+        if no_atual is not None:
+            # 1. Recuo
+            prefixo = "    " * nivel
+            
+            # 2. Imprime o nó atual (Raiz)
+            print(f"{prefixo}|- {no_atual.dado}")
+            
+            # 3. Percorre a subárvore esquerda
+            self.imprimir_hierarquia(no_atual.esquerda, nivel + 1)
+            
+            # 4. Percorre a subárvore direita
+            self.imprimir_hierarquia(no_atual.direita, nivel + 1)
