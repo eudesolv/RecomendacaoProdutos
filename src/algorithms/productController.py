@@ -4,7 +4,7 @@ from srhp import ArvoreAVL
 # atualizando os componentes para o que o antonio tinha adicionado no front, alterando a lógica para ser usada com srph e a arvoreavl, 
 # incluindo o dicio para o mapeamento dos produtos, e instanciar a arvore para
 
-class ProdutController:
+class ProductController:
     def __init__(self):
         self.produtos = []
         self.produtos_map = {}
